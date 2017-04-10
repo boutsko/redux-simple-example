@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+  </head>
+  <body>
+    <div id='app'></div>
+    <script src="https://cdn.jsdelivr.net/lodash/4/lodash.min.js"></script>
+    <script src="https://fb.me/react-15.1.0.js"></script>
+    <script src="https://fb.me/react-dom-15.1.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.6.0/redux.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/5.0.2/react-redux.js"></script>
+    <script src="https://npmcdn.com/babel-transform-in-browser@6.4.6/dist/btib.min.js"></script>
+    <script type="text/es2015">
+     const Deposit = ({ value, deposit, withdraw }) => (
+       <div>
+         <span><b>Balance:</b> ${value}</span>
+         <br />
+         <button>Deposit $10</button>
+         <button>Withdraw $10</button>
+       </div>
+     );
+
+     ReactDOM.render(
+       <Deposit
+       value={10}
+       />, 
+       document.getElementById('app')
+     );
+    </script>
+  </body>
+</html>
