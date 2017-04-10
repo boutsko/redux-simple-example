@@ -14,19 +14,64 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/5.0.2/react-redux.js"></script>
     <script src="https://npmcdn.com/babel-transform-in-browser@6.4.6/dist/btib.min.js"></script>
     <script type="text/es2015">
+
+     const { get, flowRight } = _;
+
+     const { createStore } = Redux;
+     const { Provider, connect } = ReactRedux;
+
+     //actions
+     const deposit = (value) => ({
+       type: 'DEPOSIT',
+       value
+     });
+
+     const withdraw = (value) => ({
+       type: 'WITHDRAW',
+       value
+     });
+
+     //reducer
+
+     const balance = (state = 0, action) => {
+       switch(action.type) {
+         case 'DEPOSIT':
+           return state + get(action, 'value', 0);
+         case 'WITHDRAW':
+           return state - get(action, 'value', 0);
+         default:
+           return state;
+       }
+     };
+
+     const store = createStore(balance);
+
      const Deposit = ({ value, deposit, withdraw }) => (
        <div>
-         <span><b>Balance:</b> ${value}</span>
-         <br />
-         <button>Deposit $10</button>
-         <button>Withdraw $10</button>
+       <span><b>Balance:</b> ${value}</span>
+       <br />
+       <button onClick={() => deposit(10)}>Deposit $10</button>
+       <br />
+       <button onClick={() => withdraw(10)}>Withdraw $10</button>
        </div>
      );
 
+     const stateToProps = (state) => ({
+       value: state
+     });
+
+     const actionsToProps = (dispatch) => ({
+       // (params) => dispatch(deposit(params)
+       deposit: flowRight(dispatch, deposit),
+       withdraw: flowRight(dispatch, withdraw)
+     })
+
+     const DepositContainer = connect(stateToProps, actionsToProps)(Deposit);
+
      ReactDOM.render(
-       <Deposit
-       value={10}
-       />, 
+       <Provider store={store}>
+         <DepositContainer />
+       </Provider>,
        document.getElementById('app')
      );
     </script>
