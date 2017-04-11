@@ -17,8 +17,8 @@
 
      const { get, flowRight } = _;
 
-     const { createStore } = Redux;
-     const { Provider, connect } = ReactRedux;
+     const { createStore, combineReducers, applyMiddleware } = Redux;
+     const { Provider, connect} = ReactRedux;
 
      //actions
      const deposit = (value) => ({
@@ -44,7 +44,14 @@
        }
      };
 
-     const store = createStore(balance);
+     const logger = (store) => (next) => (action) => {
+       console.log('start')
+       next(action);
+       console.log('end action', action);
+     };
+     
+     const store = createStore(combineReducers({ balance }),
+                               applyMiddleware(logger));
 
      const Deposit = ({ value, deposit, withdraw }) => (
        <div>
@@ -57,7 +64,7 @@
      );
 
      const stateToProps = (state) => ({
-       value: state
+       value: state.balance
      });
 
      const actionsToProps = (dispatch) => ({
